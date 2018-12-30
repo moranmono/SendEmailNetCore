@@ -1,8 +1,9 @@
 ﻿@page
 @model SendEmailNetCore.Pages.ContactModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Contact";
 }
 
 <h1>Contact</h1>
-
+<h2>@Model.PostedMessage</h2>
