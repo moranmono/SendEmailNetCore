@@ -11,6 +11,16 @@ namespace SendEmailNetCore.Pages
 {
     public class ContactModel : PageModel
     {
+        //string name = string.Empty;
+        //string message = string.Empty;
+        //string emailprivate = string.Empty;
+
+        [BindProperty]
+        public string Name { get; set; }
+        [BindProperty]
+        public string Email { get; set; }
+        [BindProperty]
+        public string Message { get; set; }
         public string PostedMessage { get; set; } = string.Empty;
 
         public void OnGet(int id)
