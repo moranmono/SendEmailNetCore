@@ -25,31 +25,35 @@ namespace SendEmailNetCore.Pages
 
         public void OnGet(int id)
         {
-            ViewData["PostedMessage"] = "Your message has been sent [viewdata]";
-            PostedMessage = "Your message has been sent [property]";
+            if(Request.QueryString.HasValue && Request.QueryString.Value.Contains("pb=1"))
+            {
+                ViewData["PostedMessage"] = "Your message has been sent [viewdata]";
+                PostedMessage = "Your message has been sent [property]";
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            return Redirect("/contact");
+            //SendMail(Name, Email, Message);
+            return Redirect("/contact?pb=1");
         }
 
-        public void SendMail()
+        public void SendMail(string name, string email, string message)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("moran mono", "moran@mono.com"));
-            message.To.Add(new MailboxAddress("boris moris", "moris@belhasan.com"));
-            message.Subject = "what is up?";
-            message.Body = new TextPart("plain")
+            var mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(new MailboxAddress("moran mono", "moran@mono.com"));
+            mimeMessage.To.Add(new MailboxAddress(name, email));
+            mimeMessage.Subject = "what is up?";
+            mimeMessage.Body = new TextPart("plain")
             {
-                Text = "Send email app dot net core 2.2"
+                Text = message
             };
 
             using (var client = new SmtpClient())
             {
                 client.Connect("smtp.gmail.com", 587, false);
-                client.Authenticate("username", "password");
-                client.Send(message);
+                
+                client.Send(mimeMessage);
                 client.Disconnect(true);
             }
         }
